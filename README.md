@@ -167,4 +167,19 @@ $ php artisan serve
 
 ---
 
+## アイテム格納用にデータベースとモデルを作成
+
+マイグレーションファイルを作成し、生成されたファイルのパスを確認する
+
+```bat
+$ php artisan make:migration create_items_table --create=items
+$ php artisan make:migration create_subitems_table --create=subitems
+```
+
+> Created Migration: 2019_09_16_070521_create_items_table
+>
+> Created Migration: 2019_09_16_070531_create_subitems_table
+
+---
+
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
