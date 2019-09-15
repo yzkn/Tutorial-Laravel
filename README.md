@@ -83,6 +83,15 @@ $ php artisan --version
 
 > Laravel Framework 6.0.3
 
+#### ロケールの設定
+
+* config/app.php
+
+```php
+'timezone' => 'Asia/Tokyo',
+'locale' => 'ja',
+```
+
 #### .envファイルの編集( or .env.exampleをコピーして作成)
 
 初期設定ではMySQLを使用する設定になっているため、変更する
