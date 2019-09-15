@@ -169,16 +169,35 @@ $ php artisan serve
 
 ## アイテム格納用にデータベースとモデルを作成
 
-マイグレーションファイルを作成し、生成されたファイルのパスを確認する
+マイグレーションファイルを生成
 
 ```bat
+REM $ php artisan make:model Item --migration    # モデルとマイグレーションファイルを同時に生成する場合
+REM $ php artisan make:model SubItem --migration #
+
 $ php artisan make:migration create_items_table --create=items
 $ php artisan make:migration create_subitems_table --create=subitems
 ```
 
+生成されたファイルのパスを確認し、カラムを追記する
+
 > Created Migration: 2019_09_16_070521_create_items_table
 >
 > Created Migration: 2019_09_16_070531_create_subitems_table
+
+マイグレーションを実行する
+
+```bat
+$ php artisan migrate
+```
+
+> Migrating: 2019_09_16_070521_create_items_table
+>
+> Migrated:  2019_09_16_070521_create_items_table (0.03 seconds)
+>
+> Migrating: 2019_09_16_070531_create_subitems_table
+>
+> Migrated:  2019_09_16_070531_create_subitems_table (0.02 seconds)
 
 ---
 
