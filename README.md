@@ -295,6 +295,40 @@ $ php artisan db:seed
 >
 > Database seeding completed successfully.
 
+### コントローラーを作成
+
+```bat
+$ php artisan make:controller ItemController --resource
+$ php artisan make:controller SubItemController --resource
+```
+
+* `routes/api.php`
+
+```php
+Route::resource('item', 'ItemController');
+Route::resource('subitem', 'SubItemController');
+
+// エンドポイントを制限する場合
+//  Route::resource('item', 'ItemController', ['only' => ['index']]);
+//  Route::resource('item', 'ItemController', ['except' => ['destroy']]);
+```
+
+* `app/Http/Controllers/ItemController.php`
+
+```php
+
+```
+
+| Method | Endpoint | Function | Name |
+| --- | --- | --- | --- |
+| `GET`           | `/item`           | `index`   | `item.index` |
+| `GET`           | `/item/create`    | `create`  | `item.create` |
+| `POST`          | `/item`           | `store`   | `item.store` |
+| `GET`           | `/item/{id}`      | `show`    | `item.show` |
+| `GET`           | `/item/{id}/edit` | `edit`    | `item.edit` |
+| `PUT` / `PATCH` | `/item/{id}`      | `update`  | `item.update` |
+| `DELETE`        | `/item/{id}`      | `destroy` | `item.destroy` |
+
 ---
 
 ## 論理削除(ソフトデリート)
