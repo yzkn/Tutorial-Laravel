@@ -299,10 +299,36 @@ $ php artisan db:seed
 
 ## 論理削除(ソフトデリート)
 
+### マイグレーション
+
 ```bat
 $ php artisan make:migration add_column_softDeletes_users_table --table=users
 $ php artisan make:migration add_column_softDeletes_items_table --table=items
 $ php artisan make:migration add_column_softDeletes_subitems_table --table=subitems
+```
+
+それぞれのファイルに追記する
+
+```php
+$table->dropColumn('deleted_at');
+```
+
+マイグレーションを実行する
+
+```bat
+$ php artisan migrate
+```
+
+### モデルの編集
+
+`App/User.php`, `App/Item.php`, `App/SubItem.php`
+
+```php
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+    // クラスの中
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
 ```
 
 ---

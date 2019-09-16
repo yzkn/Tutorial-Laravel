@@ -14,7 +14,7 @@ class AddColumnSoftDeletesSubitemsTable extends Migration
     public function up()
     {
         Schema::table('subitems', function (Blueprint $table) {
-            //
+            $table->softDeletes();
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnSoftDeletesSubitemsTable extends Migration
     public function down()
     {
         Schema::table('subitems', function (Blueprint $table) {
-            //
+            $table->dropColumn('deleted_at');
         });
     }
 }
