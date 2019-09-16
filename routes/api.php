@@ -17,5 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('item', 'ItemController');
-Route::resource('subitem', 'SubItemController');
+// Route::group(['middleware' => 'auth:api'], function () {
+Route::resource('item', 'ItemController', ['except' => ['create', 'edit']]);
+Route::resource('subitem', 'SubItemController', ['except' => ['create', 'edit']]);
+// });
