@@ -64,6 +64,21 @@ $ psql -h localhost -p 5432 -U tutorial_user -d tutorial_laravel
 
 ### Laravel
 
+#### キャッシュクリア系コマンド
+
+```sh
+$ php artisan config:clear # 設定ファイル
+$ php artisan cache:clear # アプリケーション
+$ php artisan route:clear # ルート
+$ php artisan view:clear # ビュー
+
+$ composer dump-autoload # オートロード
+```
+
+```sh
+$ php artisan key:generate # APP_KEY再生成
+```
+
 #### Laravelプロジェクトの作成
 
 ```bat
