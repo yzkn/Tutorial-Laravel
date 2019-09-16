@@ -169,7 +169,7 @@ $ php artisan serve
 
 ## アイテム格納用にデータベースとモデルを作成
 
-マイグレーションファイルを生成
+### マイグレーションファイルの生成
 
 ```bat
 REM $ php artisan make:model Item --migration    # モデルとマイグレーションファイルを同時に生成する場合
@@ -179,13 +179,16 @@ $ php artisan make:migration create_items_table --create=items
 $ php artisan make:migration create_subitems_table --create=subitems
 ```
 
-生成されたファイルのパスを確認し、カラムを追記する
+生成されたファイルのパスを確認、それぞれ開き、カラムを追記する
 
 > Created Migration: 2019_09_16_070521_create_items_table
 >
 > Created Migration: 2019_09_16_070531_create_subitems_table
 
-マイグレーションを実行する
+* `database/migrations/2019_09_16_070521_create_items_table`
+* `database/migrations/2019_09_16_070531_create_subitems_table`
+
+### マイグレーションの実行
 
 ```bat
 $ php artisan migrate
@@ -198,6 +201,84 @@ $ php artisan migrate
 > Migrating: 2019_09_16_070531_create_subitems_table
 >
 > Migrated:  2019_09_16_070531_create_subitems_table (0.02 seconds)
+
+### モデルの生成・編集
+
+```bat
+$ php artisan make:model Item
+$ php artisan make:model SubItem
+```
+
+* `app/Item.php`
+* `app/SubItem.php`
+
+### テストデータの挿入
+
+ファクトリを生成
+
+```bat
+$ php artisan make:factory ItemFactory --model=Item
+$ php artisan make:factory SubItemFactory --model=SubItem
+```
+
+* `database/factories/ItemFactory.php`
+* `database/factories/SubItemFactory.php`
+
+シーダ―を作成
+
+```bat
+$ php artisan make:seeder ItemSeeder
+REM $ php artisan make:seeder SubItemSeeder
+```
+
+* `database/seeds/ItemSeeder.php`
+
+```php
+use App\Item;
+use App\SubItem;
+```
+
+```php
+        factory(Item::class, 50)
+            ->create()
+            ->each(function ($post) {
+                $subitems = factory(App\SubItem::class, 2)->make();
+                $post->subitems()->saveMany($subitems);
+            });
+```
+
+* `database/seeds/DatabaseSeeder.php`
+
+```php
+$this->call(PostsTableSeeder::class);
+```
+
+シーダ―を実行する
+
+```bat
+$ composer dump-autoload
+```
+
+```
+Generating optimized autoload files> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+> @php artisan package:discover --ansi
+Discovered Package: facade/ignition
+Discovered Package: fideloper/proxy
+Discovered Package: laravel/tinker
+Discovered Package: laravel/ui
+Discovered Package: nesbot/carbon
+Discovered Package: nunomaduro/collision
+Package manifest generated successfully.
+Generated optimized autoload files containing 3811 classes
+```
+
+```bat
+$ php artisan db:seed
+```
+
+> Seeding: ItemSeeder
+>
+> Database seeding completed successfully.
 
 ---
 
