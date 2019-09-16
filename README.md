@@ -297,4 +297,14 @@ $ php artisan db:seed
 
 ---
 
+## 論理削除(ソフトデリート)
+
+```bat
+$ php artisan make:migration add_column_softDeletes_users_table --table=users
+$ php artisan make:migration add_column_softDeletes_items_table --table=items
+$ php artisan make:migration add_column_softDeletes_subitems_table --table=subitems
+```
+
+---
+
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
