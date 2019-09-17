@@ -304,28 +304,25 @@ $ php artisan make:controller SubItemController --resource
 
 * `routes/api.php`
 
-```php
-Route::resource('item', 'ItemController');
-Route::resource('subitem', 'SubItemController');
+APIなので、新規作成・編集画面は不要
 
-// エンドポイントを制限する場合
+```php
+Route::resource('item', 'ItemController', ['except' => ['create', 'edit']]);
+Route::resource('subitem', 'SubItemController', ['except' => ['create', 'edit']]);
+
+// エンドポイントをホワイトリストで制限する場合
 //  Route::resource('item', 'ItemController', ['only' => ['index']]);
-//  Route::resource('item', 'ItemController', ['except' => ['destroy']]);
 ```
 
 * `app/Http/Controllers/ItemController.php`
 
-```php
-
-```
+CRUD(Readは1件／全件)の5つに対応する関数の中身を記述する
 
 | Method | Endpoint | Function | Name |
 | --- | --- | --- | --- |
 | `GET`           | `/item`           | `index`   | `item.index` |
-| `GET`           | `/item/create`    | `create`  | `item.create` |
 | `POST`          | `/item`           | `store`   | `item.store` |
 | `GET`           | `/item/{id}`      | `show`    | `item.show` |
-| `GET`           | `/item/{id}/edit` | `edit`    | `item.edit` |
 | `PUT` / `PATCH` | `/item/{id}`      | `update`  | `item.update` |
 | `DELETE`        | `/item/{id}`      | `destroy` | `item.destroy` |
 
