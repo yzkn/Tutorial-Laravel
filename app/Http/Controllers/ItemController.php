@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 use App\Item;
 
@@ -10,12 +11,15 @@ class ItemController extends Controller
 {
     public function index()
     {
-        $items = Item::all();
+        $items = Item::with('subitems')->get();
+
+        // BLOB型を除外する
         foreach ($items as &$value) {
             if (is_resource($value['data'])) {
-                unset($value['data']); // BLOB
+                unset($value['data']);
             }
         }
+
         return response()->json(['items' => $items]);
     }
 
@@ -38,8 +42,9 @@ class ItemController extends Controller
 
     public function show($id)
     {
-        $item = Item::find($id);
+        $item = Item::with('subitems')->find($id);
         if ($item->exists()) {
+            // BLOB型を除外する
             if (is_resource($item['data'])) {
                 unset($item['data']);
             }
