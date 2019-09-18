@@ -42,11 +42,15 @@ class SubItemController extends Controller
 
         // PUTまたはPATCH
         // →PATCHの場合は部分更新
-        if ($request->isMethod('put') || (strlen($request->subtitle) > 0)) {
-            $subitem->subtitle = $request->subtitle;
-        }
-        if ($request->isMethod('put') || (strlen($request->subcontent) > 0)) {
-            $subitem->subcontent = $request->subcontent;
+        if ($request->isMethod('put')) {
+            $subitem->fill($request->all());
+        } elseif ($request->isMethod('patch')) {
+            if (strlen($request->subtitle) > 0) {
+                $subitem->subtitle = $request->subtitle;
+            }
+            if  (strlen($request->subcontent) > 0) {
+                $subitem->subcontent = $request->subcontent;
+            }
         }
 
         $subitem->save();

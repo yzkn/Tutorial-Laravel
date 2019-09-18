@@ -54,35 +54,39 @@ class ItemController extends Controller
 
         // PUTまたはPATCH
         // →PATCHの場合は部分更新
-        if ($request->isMethod('put') || (strlen($request->title) > 0)) {
-            $item->title = $request->title;
-        }
-        if ($request->isMethod('put') || (strlen($request->content) > 0)) {
-            $item->content = $request->content;
-        }
-        if ($request->isMethod('put') || (strlen($request->data) > 0)) {
-            $item->data = $request->data;
-        }
-        if ($request->isMethod('put') || (strlen($request->confirmed) > 0)) {
-            $item->confirmed = $request->confirmed;
-        }
-        if ($request->isMethod('put') || (strlen($request->amount) > 0)) {
-            $item->amount = $request->amount;
-        }
-        if ($request->isMethod('put') || (strlen($request->visitor) > 0)) {
-            $item->visitor = $request->visitor;
-        }
-        if ($request->isMethod('put') || (strlen($request->options) > 0)) {
-            $item->options = $request->options;
-        }
-        if ($request->isMethod('put') || (strlen($request->description) > 0)) {
-            $item->description = $request->description;
-        }
-        if ($request->isMethod('put') || (strlen($request->device) > 0)) {
-            $item->device = $request->device;
-        }
-        if ($request->isMethod('put') || (strlen($request->guid) > 0)) {
-            $item->guid = $request->guid;
+        if ($request->isMethod('put')) {
+            $item->fill($request->all());
+        } elseif ($request->isMethod('patch')) {
+            if (strlen($request->title) > 0) {
+                $item->title = $request->title;
+            }
+            if (strlen($request->content) > 0) {
+                $item->content = $request->content;
+            }
+            if (strlen($request->data) > 0) {
+                $item->data = $request->data;
+            }
+            if (strlen($request->confirmed) > 0) {
+                $item->confirmed = $request->confirmed;
+            }
+            if (strlen($request->amount) > 0) {
+                $item->amount = $request->amount;
+            }
+            if (strlen($request->visitor) > 0) {
+                $item->visitor = $request->visitor;
+            }
+            if (strlen($request->options) > 0) {
+                $item->options = $request->options;
+            }
+            if (strlen($request->description) > 0) {
+                $item->description = $request->description;
+            }
+            if (strlen($request->device) > 0) {
+                $item->device = $request->device;
+            }
+            if (strlen($request->guid) > 0) {
+                $item->guid = $request->guid;
+            }
         }
 
         $item->save();
