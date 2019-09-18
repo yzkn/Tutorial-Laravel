@@ -18,8 +18,7 @@ class SubItemController extends Controller
     public function store(Request $request)
     {
         $subitem = new SubItem;
-        $subitem->subtitle = $request->subtitle;
-        $subitem->subcontent = $request->subcontent;
+        $subitem->fill($request->all());
         $subitem->save();
         return response(null, 201);
     }
