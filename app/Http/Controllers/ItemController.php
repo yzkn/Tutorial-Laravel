@@ -26,16 +26,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $item = new Item;
-        $item->title = $request->title;
-        $item->content = $request->content;
-        $item->data = $request->data;
-        $item->confirmed = $request->confirmed;
-        $item->amount = $request->amount;
-        $item->visitor = $request->visitor;
-        $item->options = $request->options;
-        $item->description = $request->description;
-        $item->device = $request->device;
-        $item->guid = $request->guid;
+        $subitem->fill($request->all());
         $item->save();
         return response(null, 201);
     }
