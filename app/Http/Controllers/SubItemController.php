@@ -11,12 +11,16 @@ class SubItemController extends Controller
 {
     public function index()
     {
+        Log::debug('index()');
+
         $subitems = SubItem::all();
         return response()->json(['subitems' => $subitems]);
     }
 
     public function store(Request $request)
     {
+        Log::debug(sprintf('store(%s)', $request));
+
         $subitem = new SubItem;
         $subitem->fill($request->all());
         $subitem->save();
@@ -25,6 +29,8 @@ class SubItemController extends Controller
 
     public function show($id)
     {
+        Log::debug(sprintf('show(%s)', $id));
+
         $subitem = SubItem::find($id);
         if ($subitem->exists()) {
             return response()->json($subitem);
@@ -35,6 +41,8 @@ class SubItemController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::debug(sprintf('update(%s, %s)', $request, $id));
+
         $subitem = SubItem::find($id);
         if (!$subitem->exists()) {
             $subitem = new Item;
@@ -45,11 +53,10 @@ class SubItemController extends Controller
         if ($request->isMethod('put')) {
             $subitem->fill($request->all());
         } elseif ($request->isMethod('patch')) {
-            if (strlen($request->subtitle) > 0) {
-                $subitem->subtitle = $request->subtitle;
-            }
-            if  (strlen($request->subcontent) > 0) {
-                $subitem->subcontent = $request->subcontent;
+            foreach ($subitem->get_fillable() as $value) {
+                if (strlen($request->$value) > 0) {
+                    $subitem->$value = $request->$value;
+                }
             }
         }
 
@@ -59,6 +66,8 @@ class SubItemController extends Controller
 
     public function destroy($id)
     {
+        Log::debug(sprintf('destroy(%s)', $id));
+
         $subitem = SubItem::find($id);
         if ($subitem->exists()) {
             $subitem->delete();

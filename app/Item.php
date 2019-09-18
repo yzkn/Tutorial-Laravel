@@ -20,6 +20,11 @@ class Item extends Model
         'guid',
     ];
 
+    public function get_fillable()
+    {
+        return $this->fillable;
+    }
+
     public function subitems()
     {
         return $this->hasMany('App\SubItem');

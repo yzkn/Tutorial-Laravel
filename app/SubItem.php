@@ -13,6 +13,11 @@ class SubItem extends Model
         'subcontent'
     ];
 
+    public function get_fillable()
+    {
+        return $this->fillable;
+    }
+
     public function item()
     {
         return $this->belongsTo('App\Item');

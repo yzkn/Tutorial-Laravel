@@ -11,6 +11,8 @@ class ItemController extends Controller
 {
     public function index()
     {
+        Log::debug('index()');
+
         $items = Item::with('subitems')->get();
 
         // BLOB型を除外する
@@ -25,6 +27,8 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
+        Log::debug(sprintf('store(%s)', $request));
+
         $item = new Item;
         $subitem->fill($request->all());
         $item->save();
@@ -33,6 +37,8 @@ class ItemController extends Controller
 
     public function show($id)
     {
+        Log::debug(sprintf('show(%s)', $id));
+
         $item = Item::with('subitems')->find($id);
         if ($item->exists()) {
             // BLOB型を除外する
@@ -47,45 +53,23 @@ class ItemController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::debug(sprintf('update(%s, %s)', $request, $id));
+
         $item = Item::find($id);
         if (!$item->exists()) {
             $item = new Item;
         }
+
 
         // PUTまたはPATCH
         // →PATCHの場合は部分更新
         if ($request->isMethod('put')) {
             $item->fill($request->all());
         } elseif ($request->isMethod('patch')) {
-            if (strlen($request->title) > 0) {
-                $item->title = $request->title;
-            }
-            if (strlen($request->content) > 0) {
-                $item->content = $request->content;
-            }
-            if (strlen($request->data) > 0) {
-                $item->data = $request->data;
-            }
-            if (strlen($request->confirmed) > 0) {
-                $item->confirmed = $request->confirmed;
-            }
-            if (strlen($request->amount) > 0) {
-                $item->amount = $request->amount;
-            }
-            if (strlen($request->visitor) > 0) {
-                $item->visitor = $request->visitor;
-            }
-            if (strlen($request->options) > 0) {
-                $item->options = $request->options;
-            }
-            if (strlen($request->description) > 0) {
-                $item->description = $request->description;
-            }
-            if (strlen($request->device) > 0) {
-                $item->device = $request->device;
-            }
-            if (strlen($request->guid) > 0) {
-                $item->guid = $request->guid;
+            foreach ($item->get_fillable() as $value) {
+                if (strlen($request->$value) > 0) {
+                    $item->$value = $request->$value;
+                }
             }
         }
 
@@ -95,6 +79,8 @@ class ItemController extends Controller
 
     public function destroy($id)
     {
+        Log::debug(sprintf('destroy(%s)', $id));
+
         $item = Item::find($id);
         if ($item->exists()) {
             $item->delete();
