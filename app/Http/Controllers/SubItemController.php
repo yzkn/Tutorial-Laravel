@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\SubItem;
 
+use App\Http\Requests\SubItemRequest;
+
 class SubItemController extends Controller
 {
     public function index()
@@ -17,7 +19,7 @@ class SubItemController extends Controller
         return response()->json(['subitems' => $subitems]);
     }
 
-    public function store(Request $request)
+    public function store(SubItemRequest $request)
     {
         Log::debug(sprintf('store(%s)', $request));
 
@@ -39,7 +41,7 @@ class SubItemController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(SubItemRequest $request, $id)
     {
         Log::debug(sprintf('update(%s, %s)', $request, $id));
 

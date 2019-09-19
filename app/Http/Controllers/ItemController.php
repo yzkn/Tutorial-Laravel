@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Item;
 
+use App\Http\Requests\ItemRequest;
+
 class ItemController extends Controller
 {
     public function index()
@@ -25,7 +27,7 @@ class ItemController extends Controller
         return response()->json(['items' => $items]);
     }
 
-    public function store(Request $request)
+    public function store(ItemRequest $request)
     {
         Log::debug(sprintf('store(%s)', $request));
 
@@ -51,7 +53,7 @@ class ItemController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(ItemRequest $request, $id)
     {
         Log::debug(sprintf('update(%s, %s)', $request, $id));
 

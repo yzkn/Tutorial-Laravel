@@ -369,6 +369,47 @@ $ php artisan make:request ItemRequest
 $ php artisan make:request SubItemRequest
 ```
 
+追加されたFormRequestを編集
+
+* app\Http\Requests\ItemRequest.php
+* app\Http\Requests\SubItemRequest.php
+
+```php
+    public function authorize()
+    {
+        return // false;
+        return true;
+    }
+```
+
+ItemControllerに以下のuse文を追記し、関数の引数にあるRequestをそれぞれのFormRequestに変更
+
+* ItemController.php
+
+```php
+use App\Http\Requests\ItemRequest;
+
+
+    // public function store(Request $request)
+    public function store(ItemRequest $request)
+
+    // public function update(Request $request, $id)
+    public function update(ItemRequest $request, $id)
+```
+
+* SubItemController.php
+
+```php
+use App\Http\Requests\SubItemRequest;
+
+
+    // public function store(Request $request)
+    public function store(SubItemRequest $request)
+
+    // public function update(Request $request, $id)
+    public function update(SubItemRequest $request, $id)
+```
+
 ---
 
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
