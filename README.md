@@ -362,6 +362,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
     protected $dates = ['deleted_at'];
 ```
 
+## バリデーションの追加(FormRequest)
+
+```bat
+$ php artisan make:request ItemRequest
+$ php artisan make:request SubItemRequest
+```
+
 ---
 
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.

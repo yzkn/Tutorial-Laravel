@@ -60,7 +60,6 @@ class ItemController extends Controller
             $item = new Item;
         }
 
-
         // PUTまたはPATCH
         // →PATCHの場合は部分更新
         if ($request->isMethod('put')) {
