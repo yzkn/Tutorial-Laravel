@@ -15,6 +15,33 @@ LaravelでWebアプリケーションを作る
   * データベース名: `tutorial_laravel`
   * ユーザー名: `tutorial_user`
 
+* ステータスコード
+  * 失敗時(共通)
+    * `400 Bad Request`
+    * `401 Unauthorized`
+    * `403 Forbidden`
+    * `404 Not Found`
+    * `405 Method Not Allowed` GET/HEADの二つは必須で、このエラーコードを返してはいけない
+    * `406 Not Acceptable`
+    * `408 Request Timeout`
+    * `409 Conflict` リクエストがサーバーの現在の状態と矛盾する
+    * `410 Gone` リクエストされたコンテンツがサーバーから永久に削除され、転送先アドレスがない
+    * `418 I'm a teapot`
+    * `429 Too Many Requests` レート制限
+    * `451 Unavailable For Legal Reasons` ユーザーが政府によって検閲されたウェブページなど、違法なリソースをリクエストしている
+    * `500 Internal Server Error`
+    * `501 Not Implemented` リクエストメソッドをサーバーが対応しておらず、扱えない
+    * `503 Service Unavailable` リクエストを処理する準備ができていない(メンテナンスや過負荷でダウンしている)
+  * メソッド別
+
+| Method | Code(Success) | Code(Failure) | Details |
+| --- | --- | --- | --- |
+| `GET` | `200 OK` / `304 Not Modified` | `` |  |
+| `POST` | `201 Created` | `303 See Other` / `409 Conflict` |  |
+| `PUT` | `201 Created` (挿入) / `204 No Content` (更新) | `409 Conflict` | レコードがあれば置換、なければ新規作成 |
+| `PATCH` | `200 OK` / `204 No Content` | `404 Not Found` / `409 Conflict` | レコードの一部の項目を更新 |
+| `DELETE` | `204 No Content` | `404 Not Found` / `409 Conflict` |  |
+
 ---
 
 ## ツール類のインストール
