@@ -437,6 +437,21 @@ use App\Http\Requests\SubItemRequest;
     public function update(SubItemRequest $request, $id)
 ```
 
+## JWTAuthによるAPI認証
+
+[Packagist](https://packagist.org/packages/tymon/jwt-auth) で、1.x台のうち最新のバージョンを確認する
+
+```bat
+REM JWTAuthをインストール
+$ composer require tymon/jwt-auth v1.0.0-rc.5
+
+REM 設定ファイル(config/jwt.php)を生成
+$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+
+REM .envにキー(JWT_SECRET)を追記
+$ php artisan jwt:secret
+```
+
 ---
 
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
