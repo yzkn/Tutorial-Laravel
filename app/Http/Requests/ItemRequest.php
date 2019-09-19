@@ -27,9 +27,7 @@ class ItemRequest extends FormRequest
     public function rules()
     {
         Log::debug(sprintf('rules() method:%s', $this->method()));
-        // return [
-        // 	'title' => 'required'
-        // ];
+
         if ($this->isMethod('post') || $this->isMethod('put')) {
             // 新規投稿/レコード全項目更新
             return [
