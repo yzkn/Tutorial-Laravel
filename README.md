@@ -398,8 +398,8 @@ $ php artisan make:request SubItemRequest
 
 追加されたFormRequestを編集
 
-* app\Http\Requests\ItemRequest.php
-* app\Http\Requests\SubItemRequest.php
+* `app/Http/Requests/ItemRequest.php`
+* `app/Http/Requests/SubItemRequest.php`
 
 ```php
     public function authorize()
@@ -439,10 +439,11 @@ use App\Http\Requests\SubItemRequest;
 
 ## JWTAuthによるAPI認証
 
-[Packagist](https://packagist.org/packages/tymon/jwt-auth) で、1.x台のうち最新のバージョンを確認する
+### JWTAuthのインストール
+
+[Packagist](https://packagist.org/packages/tymon/jwt-auth) で、1.x台のうち最新のバージョンを確認し、composerコマンドの引数に指定
 
 ```bat
-REM JWTAuthをインストール
 $ composer require tymon/jwt-auth v1.0.0-rc.5
 
 REM 設定ファイル(config/jwt.php)を生成
@@ -450,6 +451,66 @@ $ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceP
 
 REM .envにキー(JWT_SECRET)を追記
 $ php artisan jwt:secret
+```
+
+### Userモデルの修正
+
+* `app/User.php`
+
+```php
+// Add
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+
+// Replace
+# class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
+
+
+// Add
+    // JWTAuth
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+```
+
+### 設定ファイルの修正
+
+* `config/auth.php`
+
+```php
+// Replace
+    // 'defaults' => [
+    //     'guard' => 'web',
+    //     'passwords' => 'users',
+    // ],
+
+      'defaults' => [
+        'guard' => 'api',
+        'passwords' => 'users',
+    ],
+
+// Replace
+    // 'guards' => [
+    //     'api' => [
+    //         'driver' => 'token',
+    //         'provider' => 'users',
+    //         'hash' => false,
+    //     ],
+    // ],
+
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
+    ],
 ```
 
 ---
