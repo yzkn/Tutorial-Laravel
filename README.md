@@ -513,6 +513,16 @@ class User extends Authenticatable implements JWTSubject
     ],
 ```
 
+### AuthControllerの作成
+
+```bat
+$ php artisan make:controller AuthController
+```
+
+```php
+
+```
+
 ---
 
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
