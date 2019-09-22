@@ -13,11 +13,22 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::post('/auth/login', 'AuthController@login');
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::group(['middleware' => 'auth:api'], function () {
-Route::resource('item', 'ItemController', ['except' => ['create', 'edit']]);
-Route::resource('subitem', 'SubItemController', ['except' => ['create', 'edit']]);
-// });
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::resource('item', 'ItemController', ['except' => ['create', 'edit']]);
+    Route::resource('subitem', 'SubItemController', ['except' => ['create', 'edit']]);
+});

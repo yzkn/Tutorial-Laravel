@@ -519,8 +519,118 @@ class User extends Authenticatable implements JWTSubject
 $ php artisan make:controller AuthController
 ```
 
-```php
+* `app/Http/Controllers/AuthController.php`
 
+```php
+// Add
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+
+// Add
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    public function login()
+    {
+        $credentials = request(['email', 'password']);
+
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
+    }
+
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+```
+
+### ルーティングの修正
+
+* `routes/api.php`
+
+```php
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+});
+```
+
+### 動作確認
+
+RESTクライアントで、アクセストークンを取得できるか確認
+
+#### Request
+
+* POST [http://127.0.0.1:8000/auth/login](http://127.0.0.1:8000/auth/login)
+* Header
+  * `Content-Type` : `application/json`
+* Body
+  * `email` : `***`
+  * `password` : `***`
+
+#### Response
+
+```json
+{
+  "access_token": "yZmRlYzk3MT...",
+  "token_type": "bearer",
+  "expires_in": 3600
+}
+```
+
+取得したアクセストークンで、ログインユーザーの情報を取得して確認
+
+`http://127.0.0.1:8000/api/auth/me?token=`
+
+#### Request
+
+* POST [http://127.0.0.1:8000/api/auth/me](http://127.0.0.1:8000/api/auth/me)
+* Header
+  * `Authorization` : `Bearer yZmRlYzk3MT...`
+
+#### Response
+
+```json
+{
+  "id": 1,
+  "name": "Y",
+  "email": "ya.androidapp@gmail.com",
+  "email_verified_at": null,
+  "created_at": "2019-09-15 15:01:25",
+  "updated_at": "2019-09-15 15:01:25",
+  "deleted_at": null
+}
 ```
 
 ---
