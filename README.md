@@ -663,6 +663,71 @@ $ php artisan make:middleware JWTAuthenticateRole
 
 * `app/Http/Middleware/JWTAuthenticateRole.php`
 
+```php
+// Add
+use Tymon\JWTAuth\Http\Middleware\Authenticate;
+
+
+// Replace
+// class JWTAuthenticateRole
+class JWTAuthenticateRole extends Authenticate
+
+
+// Replace
+    public function handle($request, Closure $next, $role=null)
+    {
+        $this->authenticate($request);
+
+        /*
+        Role     Num
+        sysadmin 1
+        admin    10-99
+        general  100-999
+        guest    1000-9999
+        */
+
+        $user = $this->auth->parseToken()->user();
+        // 要認証
+
+        // 権限チェック
+        $is_authorized = false;
+        if ($role == 'sysadmin' && $user['role'] == 1) {
+            $is_authorized = true;
+        } elseif ($role == 'admin' && $user['role'] > 0 && $user['role'] < 100) {
+            $is_authorized = true;
+        } elseif ($role == 'general' && $user['role'] > 0 && $user['role'] < 1000) {
+            $is_authorized = true;
+        } elseif ($role == 'guest' && $user['role'] > 0 && $user['role'] < 10000) {
+            $is_authorized = true;
+        } elseif ($role == null) {
+            $is_authorized = true;
+        }
+
+        if (!$is_authorized) {
+            throw new UnauthorizedHttpException('jwt-auth', 'User role error.');
+        }
+
+        return $next($request);
+    }
+```
+
+* `app/Http/Kernel.php`
+
+```php
+// Add
+        'jwt.auth.role' => \App\Http\Middleware\JWTAuthenticateRole::class,
+```
+
+作成したミドルウェアを経由するように指定
+
+* `routes\api.php`
+
+```php
+Route::group(['middleware' => ['jwt.auth.role:admin']], function() {
+    // ...
+}
+```
+
 ---
 
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
