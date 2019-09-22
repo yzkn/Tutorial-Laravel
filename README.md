@@ -633,6 +633,36 @@ RESTクライアントで、アクセストークンを取得できるか確認
 }
 ```
 
+## Role(権限)管理の追加
+
+### マイグレーション
+
+```bat
+$ php artisan make:migration add_role_to_users_table
+```
+
+* `database/migrations/2019_09_22_104030_add_role_to_users_table.php`
+
+```php
+// Add
+            $table->smallInteger('role')->default(0);
+
+// Add
+            $table->dropColumn('role');
+```
+
+```bat
+$ php artisan migrate
+```
+
+### ミドルウェアの追加
+
+``` bat
+$ php artisan make:middleware JWTAuthenticateRole
+```
+
+* `app/Http/Middleware/JWTAuthenticateRole.php`
+
 ---
 
 Copyright (c) 2019 YA-androidapp(https://github.com/YA-androidapp) All rights reserved.
