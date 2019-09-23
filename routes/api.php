@@ -24,7 +24,7 @@ Route::group([
     Route::post('me', 'AuthController@me');
 });
 
-Route::group(['middleware' => ['jwt.auth.role:admin']], function() {
+Route::group(['middleware' => ['jwt.auth.role:sysadmin']], function() {
     Route::resource('item', 'ItemController', ['except' => ['create', 'edit']]);
     Route::resource('subitem', 'SubItemController', ['except' => ['create', 'edit']]);
 });

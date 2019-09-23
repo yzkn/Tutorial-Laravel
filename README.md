@@ -661,11 +661,28 @@ $ php artisan migrate
 $ php artisan make:middleware JWTAuthenticateRole
 ```
 
+* `config/auth.php`
+
+```php
+// Add
+    // Role
+    'role' => [
+        'sysadmin' => '2',
+        'admin' => '10',
+        'general' => '100',
+        'guest' => '1000',
+    ],
+```
+
 * `app/Http/Middleware/JWTAuthenticateRole.php`
 
 ```php
 // Add
+use Config;
+use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Http\Middleware\Authenticate;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 
 // Replace
@@ -676,6 +693,8 @@ class JWTAuthenticateRole extends Authenticate
 // Replace
     public function handle($request, Closure $next, $role=null)
     {
+        Log::debug(sprintf('JWTAuthenticateRole::handle(%s, Closure, %s)', $request, $role));
+
         $this->authenticate($request);
 
         /*
@@ -687,17 +706,19 @@ class JWTAuthenticateRole extends Authenticate
         */
 
         $user = $this->auth->parseToken()->user();
-        // 要認証
+
+        // 設定値の確認
+        // Log::debug(sprintf('JWTAuthenticateRole::handle() sysadmin: %s', Config::get('auth.role.sysadmin', 2)));
 
         // 権限チェック
         $is_authorized = false;
-        if ($role == 'sysadmin' && $user['role'] == 1) {
+        if ($role == 'sysadmin' && $user['role'] == Config::get('auth.role.sysadmin', 1)) {
             $is_authorized = true;
-        } elseif ($role == 'admin' && $user['role'] > 0 && $user['role'] < 100) {
+        } elseif ($role == 'admin' && $user['role'] > 0 && $user['role'] < 10 * Config::get('auth.role.admin', 10)) {
             $is_authorized = true;
-        } elseif ($role == 'general' && $user['role'] > 0 && $user['role'] < 1000) {
+        } elseif ($role == 'general' && $user['role'] > 0 && $user['role'] < 10 * Config::get('auth.role.general', 100)) {
             $is_authorized = true;
-        } elseif ($role == 'guest' && $user['role'] > 0 && $user['role'] < 10000) {
+        } elseif ($role == 'guest' && $user['role'] > 0 && $user['role'] < 10 * Config::get('auth.role.guest', 1000)) {
             $is_authorized = true;
         } elseif ($role == null) {
             $is_authorized = true;
@@ -726,6 +747,23 @@ class JWTAuthenticateRole extends Authenticate
 Route::group(['middleware' => ['jwt.auth.role:admin']], function() {
     // ...
 }
+```
+
+例外発生時にJSONを返す
+
+* `app/Exceptions/Handler.php`
+
+```php
+// Add
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+
+
+// Add
+        if ($request->expectsJson()) {
+            if ($exception instanceof UnauthorizedHttpException) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+        }
 ```
 
 ---
