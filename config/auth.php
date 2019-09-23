@@ -101,7 +101,7 @@ return [
 
     // Role
     'role' => [
-        'sysadmin' => '2',
+        'sysadmin' => '1',
         'admin' => '10',
         'general' => '100',
         'guest' => '1000',

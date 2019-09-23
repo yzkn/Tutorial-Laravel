@@ -770,7 +770,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 ### Viewの追加
 
-* `resources/views/app.blade.php`
+* `resources/views/app.blade.php` (新規)
 
 ```php
 <!DOCTYPE html>
@@ -797,6 +797,8 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 * `routes/web.php`
 
+以下の内容のみに置換
+
 ```php
 <?php
 
@@ -815,6 +817,55 @@ $ npm ls --depth=0
 REM ファイルの更新を検知して再ビルド
 $ npm run watch
 ```
+
+* `resources/js/store.js` (新規)
+
+```js
+export default {
+    state: {
+        isLogin: false
+    }
+}
+```
+
+* `resources/js/app.js`
+
+```js
+// Replace
+// window.Vue = require('vue');
+import Vue from 'vue';
+import store from './store';
+import router from './router';
+window.state = store.state;
+
+
+// Replace
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('app', require('./components/App.vue'));
+
+
+// Enable
+const files = require.context('./', true, /\.vue$/i)
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+
+// Replace
+// const app = new Vue({
+//     el: '#app',
+// });
+const app = new Vue({
+    router
+}).$mount('#app');
+```
+
+* `resources/js/router.js` (新規)
+* `resources/js/components/App.vue` (新規)
+* `resources/js/components/pages/Home.vue` (新規)
+* `resources/js/components/pages/Item.vue` (新規)
+* `resources/js/components/pages/Login.vue` (新規)
+* `resources/js/components/pages/SubItem.vue` (新規)
+* `resources/js/components/pages/User.vue` (新規)
+* ``
 
 ---
 
