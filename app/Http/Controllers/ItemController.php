@@ -32,7 +32,7 @@ class ItemController extends Controller
         Log::debug(sprintf('store(%s)', $request));
 
         $item = new Item;
-        $subitem->fill($request->all());
+        $item->fill($request->all());
         $item->save();
         return response(null, 201);
     }

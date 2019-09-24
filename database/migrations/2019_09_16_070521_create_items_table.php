@@ -14,20 +14,20 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->bigIncrements('id');             // 符号なしBIGINTを使用した自動増分ID（主キー）
-            $table->timestamps();                    // NULL値可能なcreated_atとupdated_atカラム追加
+            $table->bigIncrements('id');                 // 符号なしBIGINTを使用した自動増分ID（主キー）
+            $table->timestamps();                        // NULL値可能なcreated_atとupdated_atカラム追加
 
-            $table->string('title', 64);             // オプションの文字長を指定したVARCHARカラム
-            $table->text('content');                 // TEXTカラム
+            $table->string('title', 64)->nullable();     // オプションの文字長を指定したVARCHARカラム
+            $table->text('content')->nullable();         // TEXTカラム
 
-            $table->binary('data');                  // BLOBカラム
-            $table->boolean('confirmed');            // BOOLEANカラム
-            $table->decimal('amount', 8, 2);         // 有効（全体桁数）／小数点以下桁数指定のDECIMALカラム
-            $table->ipAddress('visitor');            // IPアドレスカラム
-            $table->json('options');                 // JSONフィールド
-            $table->longText('description');         // LONGTEXTカラム
-            $table->macAddress('device');            // MACアドレスカラム
-            $table->uuid('guid');                      // UUIDカラム
+            $table->binary('data')->nullable();          // BLOBカラム
+            $table->boolean('confirmed')->nullable();    // BOOLEANカラム
+            $table->decimal('amount', 8, 2)->nullable(); // 有効（全体桁数）／小数点以下桁数指定のDECIMALカラム
+            $table->ipAddress('visitor')->nullable();    // IPアドレスカラム
+            $table->json('options')->nullable();         // JSONフィールド
+            $table->longText('description')->nullable(); // LONGTEXTカラム
+            $table->macAddress('device')->nullable();    // MACアドレスカラム
+            $table->uuid('guid')->nullable();            // UUIDカラム
 
             /*
             // データ型

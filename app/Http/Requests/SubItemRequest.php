@@ -50,13 +50,13 @@ class SubItemRequest extends FormRequest
     {
         if ($this->isMethod('post') || $this->isMethod('put')) {
             return [
-                'subtitle.required' => 'タイトルは必須です。',
-                'subtitle.max' => 'タイトルには64文字まで入力できます。',
+                'subtitle.required' => 'サブタイトルは必須です。',
+                'subtitle.max' => 'サブタイトルには64文字まで入力できます。',
             ];
         } elseif ($this->isMethod('put')) {
             // 部分更新
             return [
-                'subtitle.max' => 'タイトルには64文字まで入力できます。',
+                'subtitle.max' => 'サブタイトルには64文字まで入力できます。',
             ];
         } else {
             return [];

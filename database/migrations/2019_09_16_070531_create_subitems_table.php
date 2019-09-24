@@ -18,8 +18,8 @@ class CreateSubitemsTable extends Migration
             $table->timestamps();
 
             $table->unsignedInteger('item_id');
-            $table->string('subtitle', 64);
-            $table->text('subcontent');
+            $table->string('subtitle', 64)->nullable();
+            $table->text('subcontent')->nullable();
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade'); // 外部キー制約
         });
     }

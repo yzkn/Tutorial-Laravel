@@ -860,12 +860,16 @@ const app = new Vue({
 
 * `resources/js/router.js` (新規)
 * `resources/js/components/App.vue` (新規)
+* `resources/js/components/Navbar.vue` (新規)
 * `resources/js/components/pages/Home.vue` (新規)
-* `resources/js/components/pages/Item.vue` (新規)
+* `resources/js/components/pages/ItemCreate.vue` (新規)
+* `resources/js/components/pages/ItemRead.vue` (新規)
+* `resources/js/components/pages/ItemReadAll.vue` (新規)
 * `resources/js/components/pages/Login.vue` (新規)
-* `resources/js/components/pages/SubItem.vue` (新規)
+* `resources/js/components/pages/SubItemCreate.vue` (新規)
+* `resources/js/components/pages/SubItemRead.vue` (新規)
+* `resources/js/components/pages/SubItemReadAll.vue` (新規)
 * `resources/js/components/pages/User.vue` (新規)
-* ``
 
 ---
 
