@@ -37745,21 +37745,21 @@ var render = function() {
           [_c("router-link", { attrs: { to: "/" } }, [_vm._v("Home")])],
           1
         ),
-        _vm._v(" "),
+        _vm._v("   \n        "),
         _c(
           "li",
           { staticClass: "nav-item" },
           [_c("router-link", { attrs: { to: "/login" } }, [_vm._v("Log in")])],
           1
         ),
-        _vm._v(" "),
+        _vm._v("   \n        "),
         _c(
           "li",
           { staticClass: "nav-item" },
           [_c("router-link", { attrs: { to: "/item" } }, [_vm._v("Items")])],
           1
         ),
-        _vm._v(" "),
+        _vm._v("   \n        "),
         _c(
           "li",
           { staticClass: "nav-item" },
@@ -37770,11 +37770,14 @@ var render = function() {
           ],
           1
         ),
-        _vm._v(" "),
-        _c("li", { staticClass: "nav-item", on: { click: _vm.logout } }, [
-          _vm._v("Log out")
-        ]),
-        _vm._v(" "),
+        _vm._v("   \n        "),
+        _c(
+          "li",
+          { staticClass: "nav-item", on: { click: _vm.logout } },
+          [_c("router-link", [_vm._v("Log out")])],
+          1
+        ),
+        _vm._v("   \n        "),
         _c(
           "li",
           { staticClass: "nav-item" },
@@ -37785,7 +37788,7 @@ var render = function() {
           ],
           1
         ),
-        _vm._v(" "),
+        _vm._v("   \n        "),
         _c(
           "li",
           { staticClass: "nav-item" },
@@ -37795,7 +37798,8 @@ var render = function() {
             ])
           ],
           1
-        )
+        ),
+        _vm._v("   \n    ")
       ])
     ]
   )
