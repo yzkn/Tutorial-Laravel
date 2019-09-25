@@ -1885,6 +1885,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     logout: function logout() {
@@ -37661,7 +37674,7 @@ var render = function() {
   return _c(
     "div",
     { attrs: { id: "app" } },
-    [_c("navbar"), _vm._v(" "), _c("router-view")],
+    [_c("navbar"), _vm._v(" "), _c("p"), _vm._v(" "), _c("router-view")],
     1
   )
 }
@@ -37736,75 +37749,138 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "nav",
-    { staticClass: "navbar navbar-expand-lg navbar-light bg-light" },
+    { staticClass: "navbar navbar-expand-lg navbar-dark bg-primary" },
     [
-      _c("ul", { staticClass: "navbar-nav mr-auto" }, [
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [_c("router-link", { attrs: { to: "/" } }, [_vm._v("Home")])],
-          1
-        ),
-        _vm._v("   \n        "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [_c("router-link", { attrs: { to: "/login" } }, [_vm._v("Log in")])],
-          1
-        ),
-        _vm._v("   \n        "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [_c("router-link", { attrs: { to: "/item" } }, [_vm._v("Items")])],
-          1
-        ),
-        _vm._v("   \n        "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [
-            _c("router-link", { attrs: { to: "/subitem" } }, [
-              _vm._v("Sub items")
-            ])
-          ],
-          1
-        ),
-        _vm._v("   \n        "),
-        _c(
-          "li",
-          { staticClass: "nav-item", on: { click: _vm.logout } },
-          [_c("router-link", [_vm._v("Log out")])],
-          1
-        ),
-        _vm._v("   \n        "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [
-            _c("router-link", { attrs: { to: "/item/create" } }, [
-              _vm._v("Create Item")
-            ])
-          ],
-          1
-        ),
-        _vm._v("   \n        "),
-        _c(
-          "li",
-          { staticClass: "nav-item" },
-          [
-            _c("router-link", { attrs: { to: "/subitem/create" } }, [
-              _vm._v("Create SubItem")
-            ])
-          ],
-          1
-        ),
-        _vm._v("   \n    ")
-      ])
+      _vm._m(0),
+      _vm._v(" "),
+      _c("a", { staticClass: "navbar-brand", attrs: { href: "#" } }, [
+        _vm._v("ブランド")
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "collapse navbar-collapse",
+          attrs: { id: "navbarNavDropdown" }
+        },
+        [
+          _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+            _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link active",
+                    attrs: { to: { name: "item-readall" } }
+                  },
+                  [_vm._v("Items")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link active",
+                    attrs: { to: { name: "subitem-readall" } }
+                  },
+                  [_vm._v("Sub items")]
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("ul", { staticClass: "navbar-nav ml-auto" }, [
+            _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link active",
+                    attrs: { to: { name: "item-create" } }
+                  },
+                  [_vm._v("Create Item")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link active",
+                    attrs: { to: { name: "subitem-create" } }
+                  },
+                  [_vm._v("Create SubItem")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "nav-item" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link active",
+                    attrs: { to: { name: "login" } }
+                  },
+                  [_vm._v("Login")]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "li",
+              { staticClass: "nav-item", on: { click: _vm.logout } },
+              [_c("router-link", [_vm._v("Logout")])],
+              1
+            )
+          ])
+        ]
+      )
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "navbar-toggler",
+        attrs: {
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#navbarNavDropdown",
+          "aria-controls": "navbarNavDropdown",
+          "aria-expanded": "false",
+          "aria-label": "ナビゲーションの切替"
+        }
+      },
+      [_c("span", { staticClass: "navbar-toggler-icon" })]
+    )
+  }
+]
 render._withStripped = true
 
 

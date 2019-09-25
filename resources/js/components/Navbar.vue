@@ -1,14 +1,27 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><router-link to="/">Home</router-link></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item"><router-link to="/login">Log in</router-link></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item"><router-link to="/item">Items</router-link></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item"><router-link to="/subitem">Sub items</router-link></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item" @click="logout"><router-link>Log out</router-link></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item"><router-link to="/item/create">Create Item</router-link></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item"><router-link to="/subitem/create">Create SubItem</router-link></li>&nbsp;&nbsp;&nbsp;
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="ナビゲーションの切替">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">ブランド</a>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <router-link class="nav-link active" :to="{ name: 'item-readall' }">Items</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link active" :to="{ name: 'subitem-readall' }">Sub items</router-link>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><router-link class="nav-link active" :to="{ name: 'item-create' }">Create Item</router-link></li>
+                <li class="nav-item"><router-link class="nav-link active" :to="{ name: 'subitem-create' }">Create SubItem</router-link></li>
+
+                <li class="nav-item"><router-link class="nav-link active" :to="{ name: 'login' }">Login</router-link></li>
+                <li class="nav-item" @click="logout"><router-link>Logout</router-link></li>
+            </ul>
+        </div>
     </nav>
 </template>
 
