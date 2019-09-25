@@ -12,7 +12,7 @@
 
 <body>
     <div id="app">
-        <app></app>
+        <app brand={{ config('app.name', 'Tutorial-Laravel') }}></app>
     </div>
 </body>
 <script src="{{ mix('js/app.js') }}"></script>

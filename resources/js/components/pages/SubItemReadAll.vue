@@ -2,7 +2,7 @@
     <div class="container">
         <div class="list-group">
             <router-link v-for="( subitem, key, index ) in subitems" :key="key" :to="{ name: 'subitem-read', params: { id: subitem.id } }" class="list-group-subitem">
-                {{subitem.title}}
+                {{subitem.subtitle}}
                 <button class="btn" @click.stop.prevent="onDelete(subitem.id, key)">Delete</button>
             </router-link>
         </div>
