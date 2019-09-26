@@ -811,7 +811,7 @@ Route::any('{all}', function () {
 
 ```bat
 $ npm install
-$ npm install vue-router
+$ npm install vue-router --save
 $ npm ls --depth=0
 
 REM ファイルの更新を検知して再ビルド
@@ -864,7 +864,7 @@ const app = new Vue({
 ### Vuexの追加
 
 ```bat
-$ npm install vuex
+$ npm install vuex --save
 ```
 
 * resources/js/store/index.js
