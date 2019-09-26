@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store/index';
 
 Vue.use(VueRouter);
 
@@ -22,7 +23,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (state.isLogin === false) {
+        if (store.getters['auth/isLogin'] === false) {
             next({
                 path: '/login',
                 query: { redirect: to.fullPath }

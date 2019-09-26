@@ -33,6 +33,7 @@ export default {
       password: ""
     };
   },
+
   methods: {
     login() {
       const redirect = this.$route.query.redirect;
@@ -44,7 +45,10 @@ export default {
         .then(res => {
           const token = res.data.access_token;
           axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-          state.isLogin = true;
+          this.$store.commit("auth/logedin");
+
+          // console.log(this.$store.getters['auth/isLogin'])
+
           this.$router.push({ path: redirect ? redirect : "/" });
         })
         .catch(error => {

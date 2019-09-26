@@ -30,10 +30,10 @@
           <router-link class="nav-link active" :to="{ name: 'subitem-create' }">Create SubItem</router-link>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item" v-show="!isLogin">
           <router-link class="nav-link active" :to="{ name: 'login' }">Login</router-link>
         </li>
-        <li class="nav-item" @click="logout">
+        <li class="nav-item" @click="logout" v-show="isLogin">
           <span class="nav-link active">Logout</span>
         </li>
       </ul>
@@ -43,15 +43,24 @@
 
 <script>
     export default {
+      computed: {
+        isLogin: function () {
+          // console.log(this.$store.getters['auth/isLogin'])
+          return this.$store.getters["auth/isLogin"];
+        }
+      },
+
       props: {
-          brand: String,
+          brand: String
       },
 
       methods: {
           logout() {
               axios.post('/api/auth/logout').then(res => {
                   axios.defaults.headers.common['Authorization'] = '';
-                  state.isLogin = false;
+                  this.$store.commit("auth/logedout");
+
+                  // console.log(this.$store.getters['auth/isLogin'])
                   this.$router.push({path: '/'});
               });
           }

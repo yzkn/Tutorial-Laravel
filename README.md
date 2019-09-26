@@ -820,23 +820,13 @@ $ npm run watch
 
 * `resources/js/store.js` (新規)
 
-```js
-export default {
-    state: {
-        isLogin: false
-    }
-}
-```
-
 * `resources/js/app.js`
 
 ```js
 // Replace
 // window.Vue = require('vue');
 import Vue from 'vue';
-import store from './store';
 import router from './router';
-window.state = store.state;
 
 
 // Replace
@@ -870,6 +860,58 @@ const app = new Vue({
 * `resources/js/components/pages/SubItemRead.vue` (新規)
 * `resources/js/components/pages/SubItemReadAll.vue` (新規)
 * `resources/js/components/pages/User.vue` (新規)
+
+### Vuexの追加
+
+```bat
+$ npm install vuex
+```
+
+* resources/js/store/index.js
+
+```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+import auth from "./modules/auth";
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+    modules: {
+        auth
+    }
+});
+```
+
+* resources/js/store/modules/auth.js
+
+```js
+const state = {
+    authenticated: false
+};
+
+const mutations = {
+    logedin (state) {
+        state.authenticated = true;
+    },
+    logedout (state) {
+        state.authenticated = false;
+    }
+};
+
+const getters = {
+    isLogin (state) {
+        return state.authenticated;
+    }
+};
+
+export default {
+    namespaced: true,
+    state,
+    mutations,
+    getters
+};
+```
 
 ---
 
