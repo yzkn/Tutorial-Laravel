@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <navbar :brand=brand></navbar>
+        <Jumbotron></Jumbotron>
         <p></p>
         <router-view></router-view>
     </div>

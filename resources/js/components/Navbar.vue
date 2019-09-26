@@ -1,69 +1,92 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <button
-      type="button"
-      class="navbar-toggler"
-      data-toggle="collapse"
-      data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown"
-      aria-expanded="false"
-      aria-label="ナビゲーションの切替"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" href="#">{{ brand }}</a>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link class="nav-link active" :to="{ name: 'item-readall' }">Items</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link active" :to="{ name: 'subitem-readall' }">Sub items</router-link>
-        </li>
-      </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button
+            type="button"
+            class="navbar-toggler"
+            data-toggle="collapse"
+            data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="ナビゲーションの切替"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">{{ brand }}</a>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <router-link class="nav-link active" :to="{ name: 'item-readall' }">Items</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link active" :to="{ name: 'subitem-readall' }">Sub items</router-link>
+                </li>
+            </ul>
 
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <router-link class="nav-link active" :to="{ name: 'item-create' }">Create Item</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link active" :to="{ name: 'subitem-create' }">Create SubItem</router-link>
-        </li>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <router-link class="nav-link active" :to="{ name: 'item-create' }">Create Item</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link
+                        class="nav-link active"
+                        :to="{ name: 'subitem-create' }"
+                    >Create SubItem</router-link>
+                </li>
 
-        <li class="nav-item" v-show="!isLogin">
-          <router-link class="nav-link active" :to="{ name: 'login' }">Login</router-link>
-        </li>
-        <li class="nav-item" @click="logout" v-show="isLogin">
-          <span class="nav-link active">Logout</span>
-        </li>
-      </ul>
-    </div>
-  </nav>
+                <li class="nav-item" v-show="!isLogin">
+                    <router-link class="nav-link active" :to="{ name: 'login' }">Login</router-link>
+                </li>
+                <li class="nav-item" @click="logout" v-show="isLogin">
+                    <span class="nav-link active">Logout</span>
+                </li>
+                <li class="nav-item dropdown">
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="dropdown_create"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >Create an item</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown_create">
+                        <router-link
+                            class="dropdown-item"
+                            :to="{ name: 'item-create' }"
+                        >Create Item</router-link>
+                        <router-link
+                            class="dropdown-item"
+                            :to="{ name: 'subitem-create' }"
+                        >Create SubItem</router-link>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </template>
 
 <script>
     export default {
-      computed: {
-        isLogin: function () {
-          // console.log(this.$store.getters['auth/isLogin'])
-          return this.$store.getters["auth/isLogin"];
+        computed: {
+            isLogin: function() {
+                // console.log(this.$store.getters['auth/isLogin'])
+                return this.$store.getters["auth/isLogin"];
+            }
+        },
+
+        props: {
+            brand: String
+        },
+
+        methods: {
+            logout() {
+                axios.post("/api/auth/logout").then(res => {
+                    axios.defaults.headers.common["Authorization"] = "";
+                    this.$store.commit("auth/logedout");
+
+                    // console.log(this.$store.getters['auth/isLogin'])
+                    this.$router.push({ path: "/" });
+                });
+            }
         }
-      },
-
-      props: {
-          brand: String
-      },
-
-      methods: {
-          logout() {
-              axios.post('/api/auth/logout').then(res => {
-                  axios.defaults.headers.common['Authorization'] = '';
-                  this.$store.commit("auth/logedout");
-
-                  // console.log(this.$store.getters['auth/isLogin'])
-                  this.$router.push({path: '/'});
-              });
-          }
-      }
-    }
+    };
 </script>
