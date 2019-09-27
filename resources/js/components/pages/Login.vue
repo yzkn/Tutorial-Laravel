@@ -45,9 +45,11 @@ export default {
         .then(res => {
           const token = res.data.access_token;
           axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-          this.$store.commit("auth/logedin");
 
-          // console.log(this.$store.getters['auth/isLogin'])
+          console.log("auth/logedin")
+          console.log(this.$store.getters['auth/isLogin'])
+          this.$store.commit("auth/logedin");
+          console.log(this.$store.getters['auth/isLogin'])
 
           this.$router.push({ path: redirect ? redirect : "/" });
         })

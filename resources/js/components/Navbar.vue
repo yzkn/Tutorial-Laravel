@@ -23,22 +23,6 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <router-link class="nav-link active" :to="{ name: 'item-create' }">Create Item</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link
-                        class="nav-link active"
-                        :to="{ name: 'subitem-create' }"
-                    >Create SubItem</router-link>
-                </li>
-
-                <li class="nav-item" v-show="!isLogin">
-                    <router-link class="nav-link active" :to="{ name: 'login' }">Login</router-link>
-                </li>
-                <li class="nav-item" @click="logout" v-show="isLogin">
-                    <span class="nav-link active">Logout</span>
-                </li>
                 <li class="nav-item dropdown">
                     <a
                         class="nav-link dropdown-toggle"
@@ -58,6 +42,13 @@
                             :to="{ name: 'subitem-create' }"
                         >Create SubItem</router-link>
                     </div>
+                </li>
+
+                <li class="nav-item" v-show="!isLogin">
+                    <router-link class="nav-link active" :to="{ name: 'login' }">Login</router-link>
+                </li>
+                <li class="nav-item" @click="logout" v-show="isLogin">
+                    <span class="nav-link active">Logout</span>
                 </li>
             </ul>
         </div>
@@ -81,9 +72,12 @@
             logout() {
                 axios.post("/api/auth/logout").then(res => {
                     axios.defaults.headers.common["Authorization"] = "";
-                    this.$store.commit("auth/logedout");
 
-                    // console.log(this.$store.getters['auth/isLogin'])
+                    console.log("auth/logedout")
+                    console.log(this.$store.getters['auth/isLogin'])
+                    this.$store.commit("auth/logedout");
+                    console.log(this.$store.getters['auth/isLogin'])
+
                     this.$router.push({ path: "/" });
                 });
             }

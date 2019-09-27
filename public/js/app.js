@@ -1951,15 +1951,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     isLogin: function isLogin() {
@@ -1976,9 +1967,12 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("/api/auth/logout").then(function (res) {
         axios.defaults.headers.common["Authorization"] = "";
+        console.log("auth/logedout");
+        console.log(_this.$store.getters['auth/isLogin']);
 
-        _this.$store.commit("auth/logedout"); // console.log(this.$store.getters['auth/isLogin'])
+        _this.$store.commit("auth/logedout");
 
+        console.log(_this.$store.getters['auth/isLogin']);
 
         _this.$router.push({
           path: "/"
@@ -2183,6 +2177,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2266,9 +2277,12 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         var token = res.data.access_token;
         axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+        console.log("auth/logedin");
+        console.log(_this.$store.getters['auth/isLogin']);
 
-        _this.$store.commit("auth/logedin"); // console.log(this.$store.getters['auth/isLogin'])
+        _this.$store.commit("auth/logedin");
 
+        console.log(_this.$store.getters['auth/isLogin']);
 
         _this.$router.push({
           path: redirect ? redirect : "/"
@@ -2310,25 +2324,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       saved: false,
-      subtitle: '',
-      subcontent: ''
+      subtitle: "",
+      subcontent: "",
+      item_id: "",
+      items: null
     };
+  },
+  mounted: function mounted() {
+    this.getItems();
   },
   methods: {
     create: function create() {
       var _this = this;
 
-      axios.post('/api/subitem', {
+      axios.post("/api/subitem", {
         subtitle: this.subtitle,
-        subcontent: this.subcontent
+        subcontent: this.subcontent,
+        item_id: this.item_id
       }).then(function (res) {
-        _this.subtitle = '';
-        _this.subcontent = '';
+        _this.subtitle = "";
+        _this.subcontent = "";
+        _this.item_id = "";
         _this.saved = true;
+      });
+    },
+    getItems: function getItems() {
+      var _this2 = this;
+
+      axios.get("/api/item").then(function (res) {
+        _this2.items = res.data.items;
       });
     }
   }
@@ -2375,34 +2407,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       subitem: null,
       editFlg: false,
-      updated: false
+      updated: false,
+      items: null
     };
   },
   mounted: function mounted() {
+    this.getItems();
     this.getSubItem();
   },
   methods: {
     getSubItem: function getSubItem() {
       var _this = this;
 
-      axios.get('/api/subitem/' + this.$route.params.id).then(function (res) {
+      axios.get("/api/subitem/" + this.$route.params.id).then(function (res) {
         _this.subitem = res.data;
       });
     },
     onUpdate: function onUpdate() {
       var _this2 = this;
 
-      axios.patch('/api/subitem/' + this.subitem.id, {
-        title: this.subitem.title,
-        content: this.subitem.content
+      axios.patch("/api/subitem/" + this.subitem.id, {
+        title: this.subitem.subtitle,
+        content: this.subitem.subcontent,
+        item_id: this.subitem.item_id
       }).then(function (res) {
         _this2.editFlg = false;
         _this2.updated = true;
+      });
+    },
+    getItems: function getItems() {
+      var _this3 = this;
+
+      axios.get("/api/item").then(function (res) {
+        var apiitems = res.data.items;
+        _this3.items = apiitems.sort(function (a, b) {
+          return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+        });
       });
     }
   }
@@ -2419,6 +2486,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -38682,37 +38760,50 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("ul", { staticClass: "navbar-nav ml-auto" }, [
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link active",
-                    attrs: { to: { name: "item-create" } }
-                  },
-                  [_vm._v("Create Item")]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              { staticClass: "nav-item" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "nav-link active",
-                    attrs: { to: { name: "subitem-create" } }
-                  },
-                  [_vm._v("Create SubItem")]
-                )
-              ],
-              1
-            ),
+            _c("li", { staticClass: "nav-item dropdown" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "nav-link dropdown-toggle",
+                  attrs: {
+                    href: "#",
+                    id: "dropdown_create",
+                    "data-toggle": "dropdown",
+                    "aria-haspopup": "true",
+                    "aria-expanded": "false"
+                  }
+                },
+                [_vm._v("Create an item")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "dropdown-menu",
+                  attrs: { "aria-labelledby": "dropdown_create" }
+                },
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "dropdown-item",
+                      attrs: { to: { name: "item-create" } }
+                    },
+                    [_vm._v("Create Item")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "dropdown-item",
+                      attrs: { to: { name: "subitem-create" } }
+                    },
+                    [_vm._v("Create SubItem")]
+                  )
+                ],
+                1
+              )
+            ]),
             _vm._v(" "),
             _c(
               "li",
@@ -38759,52 +38850,7 @@ var render = function() {
                   _vm._v("Logout")
                 ])
               ]
-            ),
-            _vm._v(" "),
-            _c("li", { staticClass: "nav-item dropdown" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "nav-link dropdown-toggle",
-                  attrs: {
-                    href: "#",
-                    id: "dropdown_create",
-                    "data-toggle": "dropdown",
-                    "aria-haspopup": "true",
-                    "aria-expanded": "false"
-                  }
-                },
-                [_vm._v("Create an item")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "dropdown-menu",
-                  attrs: { "aria-labelledby": "dropdown_create" }
-                },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "dropdown-item",
-                      attrs: { to: { name: "item-create" } }
-                    },
-                    [_vm._v("Create Item")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "dropdown-item",
-                      attrs: { to: { name: "subitem-create" } }
-                    },
-                    [_vm._v("Create SubItem")]
-                  )
-                ],
-                1
-              )
-            ])
+            )
           ])
         ]
       )
@@ -39154,8 +39200,6 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _vm._m(2, true),
-                    _vm._v(" "),
                     _c(
                       "a",
                       {
@@ -39235,19 +39279,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Country")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
+        _c("th", { staticStyle: { width: "10%" } }, [_vm._v("Actions")])
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "edit", attrs: { href: "#", title: "Edit" } },
-      [_c("i", { staticClass: "material-icons" }, [_vm._v("")])]
-    )
   }
 ]
 render._withStripped = true
@@ -39397,7 +39431,7 @@ var render = function() {
       ? _c(
           "div",
           { staticClass: "alert alert-primary", attrs: { role: "alert" } },
-          [_vm._v("\n    Saved\n    ")]
+          [_vm._v("Saved")]
         )
       : _vm._e(),
     _vm._v(" "),
@@ -39458,6 +39492,47 @@ var render = function() {
         })
       ]),
       _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "SubItemItemId" } }, [
+          _vm._v("親アイテム")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.item_id,
+                expression: "item_id"
+              }
+            ],
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.item_id = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.items, function(item, key, index) {
+            return _c("option", { key: key, domProps: { value: item.id } }, [
+              _vm._v(_vm._s(item.title))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
       _c(
         "button",
         {
@@ -39507,7 +39582,7 @@ var render = function() {
                   staticClass: "alert alert-primary",
                   attrs: { role: "alert" }
                 },
-                [_vm._v("\n            Updated\n        ")]
+                [_vm._v("Updated")]
               )
             : _vm._e(),
           _vm._v(" "),
@@ -39515,11 +39590,15 @@ var render = function() {
             !_vm.editFlg
               ? _c("div", [
                   _c("h1", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(_vm.subitem.title))
+                    _vm._v(_vm._s(_vm.subitem.subtitle))
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-text" }, [
-                    _vm._v(_vm._s(_vm.subitem.content))
+                    _vm._v(_vm._s(_vm.subitem.subcontent))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-text" }, [
+                    _vm._v(_vm._s(_vm.subitem.item_id))
                   ])
                 ])
               : _c("form", [
@@ -39529,8 +39608,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.subitem.title,
-                          expression: "subitem.title"
+                          value: _vm.subitem.subtitle,
+                          expression: "subitem.subtitle"
                         }
                       ],
                       staticClass: "form-control",
@@ -39539,13 +39618,13 @@ var render = function() {
                         name: "title",
                         id: "SubItemTitle"
                       },
-                      domProps: { value: _vm.subitem.title },
+                      domProps: { value: _vm.subitem.subtitle },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.subitem, "title", $event.target.value)
+                          _vm.$set(_vm.subitem, "subtitle", $event.target.value)
                         }
                       }
                     })
@@ -39557,22 +39636,69 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.subitem.content,
-                          expression: "subitem.content"
+                          value: _vm.subitem.subcontent,
+                          expression: "subitem.subcontent"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: { name: "content", id: "SubItemContent" },
-                      domProps: { value: _vm.subitem.content },
+                      domProps: { value: _vm.subitem.subcontent },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.subitem, "content", $event.target.value)
+                          _vm.$set(
+                            _vm.subitem,
+                            "subcontent",
+                            $event.target.value
+                          )
                         }
                       }
                     })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.subitem.item_id,
+                            expression: "subitem.item_id"
+                          }
+                        ],
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.subitem,
+                              "item_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      _vm._l(_vm.items, function(item, key, index) {
+                        return _c(
+                          "option",
+                          { key: key, domProps: { value: item.id } },
+                          [_vm._v(_vm._s(item.id) + ": " + _vm._s(item.title))]
+                        )
+                      }),
+                      0
+                    )
                   ])
                 ])
           ]),
@@ -39629,43 +39755,6 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c(
-      "div",
-      { staticClass: "list-group" },
-      _vm._l(_vm.subitems, function(subitem, key, index) {
-        return _c(
-          "router-link",
-          {
-            key: key,
-            staticClass: "list-group-item",
-            attrs: { to: { name: "subitem-read", params: { id: subitem.id } } }
-          },
-          [
-            _vm._v(
-              "\n                " +
-                _vm._s(subitem.subtitle) +
-                "\n                "
-            ),
-            _c(
-              "button",
-              {
-                staticClass: "btn",
-                on: {
-                  click: function($event) {
-                    $event.stopPropagation()
-                    $event.preventDefault()
-                    return _vm.onDelete(subitem.id, key)
-                  }
-                }
-              },
-              [_vm._v("Delete")]
-            )
-          ]
-        )
-      }),
-      1
-    ),
-    _vm._v(" "),
     _c("div", { staticClass: "table-wrapper" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -39785,9 +39874,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticStyle: { width: "20%" } }, [_vm._v("Sub title")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" } }, [_vm._v("Sub content")]),
+        _c("th", [_vm._v("Sub content")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
+        _c("th", { staticStyle: { width: "10%" } }, [_vm._v("Actions")])
       ])
     ])
   }

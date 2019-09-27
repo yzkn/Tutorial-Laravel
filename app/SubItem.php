@@ -10,7 +10,8 @@ class SubItem extends Model
 
     protected $fillable = [
         'subtitle',
-        'subcontent'
+        'subcontent',
+        'item_id'
     ];
 
     public function get_fillable()
