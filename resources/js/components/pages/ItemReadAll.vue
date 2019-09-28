@@ -26,27 +26,21 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th style="width: 5%;">#</th>
-                        <th style="width: 20%;">Title</th>
-                        <th style="width: 20%;">Content</th>
-                        <th>City</th>
-                        <th>Pin Code</th>
-                        <th>Country</th>
+                        <th
+                            v-for="(value, key, index) in columns"
+                            :key="key"
+                            @click="sortBy(key)"
+                        >{{ value }}</th>
                         <th style="width: 10%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
-                        v-for="( item, key, index ) in items"
+                        v-for="( item, key, index ) in filteredItems"
                         :key="key"
                         :to="{ name: 'item-read', params: { id: item.id } }"
                     >
-                        <td>{{item.id}}</td>
-                        <td>{{item.title}}</td>
-                        <td>{{item.content}}</td>
-                        <td>Portland</td>
-                        <td>97219</td>
-                        <td>USA</td>
+                        <td v-for="(value2, key2) in columns" :key="key2">{{ item[key2] }}</td>
                         <td>
                             <router-link
                                 class="edit"
@@ -74,8 +68,20 @@
 <script>
     export default {
         data: function() {
+            var columns = {
+                id: "ID",
+                title: "タイトル",
+                content: "コンテンツ"
+            };
+            var sortOrders = {};
+            Object.keys(columns).forEach(function(key) {
+                sortOrders[key] = 1;
+            });
             return {
-                items: null
+                columns: columns,
+                items: null,
+                sortKey: "",
+                sortOrders: sortOrders
             };
         },
         mounted: function() {
@@ -91,6 +97,27 @@
                 axios.delete("/api/item/" + id).then(() => {
                     this.$delete(this.items, key);
                 });
+            },
+            sortBy: function(key) {
+                this.sortKey = key;
+                this.sortOrders[key] = this.sortOrders[key] * -1;
+            }
+        },
+        computed: {
+            filteredItems: function() {
+                var data = this.items;
+
+                var sortKey = this.sortKey;
+                var order = this.sortOrders[sortKey] || 1;
+
+                if (sortKey) {
+                    data = data.slice().sort(function(a, b) {
+                        a = a[sortKey];
+                        b = b[sortKey];
+                        return (a === b ? 0 : a > b ? 1 : -1) * order;
+                    });
+                }
+                return data;
             }
         }
     };

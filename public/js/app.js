@@ -2188,16 +2188,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
+    var columns = {
+      id: "ID",
+      title: "タイトル",
+      content: "コンテンツ"
+    };
+    var sortOrders = {};
+    Object.keys(columns).forEach(function (key) {
+      sortOrders[key] = 1;
+    });
     return {
-      items: null
+      columns: columns,
+      items: null,
+      sortKey: "",
+      sortOrders: sortOrders
     };
   },
   mounted: function mounted() {
@@ -2217,6 +2223,27 @@ __webpack_require__.r(__webpack_exports__);
       axios["delete"]("/api/item/" + id).then(function () {
         _this2.$delete(_this2.items, key);
       });
+    },
+    sortBy: function sortBy(key) {
+      this.sortKey = key;
+      this.sortOrders[key] = this.sortOrders[key] * -1;
+    }
+  },
+  computed: {
+    filteredItems: function filteredItems() {
+      var data = this.items;
+      var sortKey = this.sortKey;
+      var order = this.sortOrders[sortKey] || 1;
+
+      if (sortKey) {
+        data = data.slice().sort(function (a, b) {
+          a = a[sortKey];
+          b = b[sortKey];
+          return (a === b ? 0 : a > b ? 1 : -1) * order;
+        });
+      }
+
+      return data;
     }
   }
 });
@@ -39157,11 +39184,34 @@ var render = function() {
       _vm._m(0),
       _vm._v(" "),
       _c("table", { staticClass: "table table-striped" }, [
-        _vm._m(1),
+        _c("thead", [
+          _c(
+            "tr",
+            [
+              _vm._l(_vm.columns, function(value, key, index) {
+                return _c(
+                  "th",
+                  {
+                    key: key,
+                    on: {
+                      click: function($event) {
+                        return _vm.sortBy(key)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(value))]
+                )
+              }),
+              _vm._v(" "),
+              _c("th", { staticStyle: { width: "10%" } }, [_vm._v("Actions")])
+            ],
+            2
+          )
+        ]),
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.items, function(item, key, index) {
+          _vm._l(_vm.filteredItems, function(item, key, index) {
             return _c(
               "tr",
               {
@@ -39169,17 +39219,9 @@ var render = function() {
                 attrs: { to: { name: "item-read", params: { id: item.id } } }
               },
               [
-                _c("td", [_vm._v(_vm._s(item.id))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(item.title))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(item.content))]),
-                _vm._v(" "),
-                _c("td", [_vm._v("Portland")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("97219")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("USA")]),
+                _vm._l(_vm.columns, function(value2, key2) {
+                  return _c("td", { key: key2 }, [_vm._v(_vm._s(item[key2]))])
+                }),
                 _vm._v(" "),
                 _c(
                   "td",
@@ -39222,7 +39264,8 @@ var render = function() {
                   ],
                   1
                 )
-              ]
+              ],
+              2
             )
           }),
           0
@@ -39258,28 +39301,6 @@ var staticRenderFns = [
             ])
           ])
         ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { staticStyle: { width: "5%" } }, [_vm._v("#")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" } }, [_vm._v("Title")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { width: "20%" } }, [_vm._v("Content")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("City")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Pin Code")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Country")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { width: "10%" } }, [_vm._v("Actions")])
       ])
     ])
   }
