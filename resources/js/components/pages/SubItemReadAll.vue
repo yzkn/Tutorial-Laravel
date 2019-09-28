@@ -26,21 +26,21 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th style="width: 5%;">#</th>
-                        <th style="width: 20%;">Sub title</th>
-                        <th>Sub content</th>
+                        <th
+                            v-for="(value, key, index) in columns"
+                            :key="key"
+                            @click="sortBy(key)"
+                        >{{ value }}</th>
                         <th style="width: 10%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
-                        v-for="( subitem, key, index ) in subitems"
+                        v-for="( subitem, key, index ) in filteredSubItems"
                         :key="key"
                         :to="{ name: 'subitem-read', params: { id: subitem.id } }"
                     >
-                        <td>{{subitem.id}}</td>
-                        <td>{{subitem.subtitle}}</td>
-                        <td>{{subitem.subcontent}}</td>
+                        <td v-for="(value2, key2) in columns" :key="key2">{{ subitem[key2] }}</td>
                         <td>
                             <router-link
                                 class="edit"
@@ -49,7 +49,6 @@
                             >
                                 <i class="material-icons">&#xE254;</i>
                             </router-link>
-
                             <a
                                 href="#"
                                 class="delete"
@@ -69,8 +68,20 @@
 <script>
     export default {
         data: function() {
+            var columns = {
+                id: "ID",
+                subtitle: "サブタイトル",
+                subcontent: "サブコンテンツ"
+            };
+            var sortOrders = {};
+            Object.keys(columns).forEach(function(key) {
+                sortOrders[key] = 1;
+            });
             return {
-                subitems: null
+                columns: columns,
+                subitems: null,
+                sortKey: "",
+                sortOrders: sortOrders
             };
         },
         mounted: function() {
@@ -86,7 +97,38 @@
                 axios.delete("/api/subitem/" + id).then(() => {
                     this.$delete(this.subitems, key);
                 });
+            },
+            sortBy: function(key) {
+                this.sortKey = key;
+                this.sortOrders[key] = this.sortOrders[key] * -1;
+            }
+        },
+        computed: {
+            filteredSubItems: function() {
+                var data = this.subitems;
+
+                var sortKey = this.sortKey;
+                var order = this.sortOrders[sortKey] || 1;
+
+                if (sortKey) {
+                    data = data.slice().sort(function(a, b) {
+                        a = a[sortKey];
+                        b = b[sortKey];
+
+                        if (typeof(a) === 'string') { a = a.toLowerCase(); }
+                        if (typeof(b) === 'string') { b = b.toLowerCase(); }
+
+                        return (a === b ? 0 : a > b ? 1 : -1) * order;
+                    });
+                }
+                return data;
             }
         }
     };
 </script>
+
+<style scoped>
+    @import "https://fonts.googleapis.com/css?family=Roboto|Varela+Round";
+    @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+    @import "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
+</style>

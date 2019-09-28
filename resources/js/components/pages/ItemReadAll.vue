@@ -114,6 +114,10 @@
                     data = data.slice().sort(function(a, b) {
                         a = a[sortKey];
                         b = b[sortKey];
+
+                        if (typeof(a) === 'string') { a = a.toLowerCase(); }
+                        if (typeof(b) === 'string') { b = b.toLowerCase(); }
+
                         return (a === b ? 0 : a > b ? 1 : -1) * order;
                     });
                 }
