@@ -11,7 +11,7 @@
                             <div class="input-group">
                                 <input
                                     type="text"
-                                    id="search"
+                                    v-model="searchWord"
                                     class="form-control"
                                     placeholder="Search by Name"
                                 />
@@ -80,6 +80,7 @@
             return {
                 columns: columns,
                 items: null,
+                searchWord: "",
                 sortKey: "",
                 sortOrders: sortOrders
             };
@@ -115,12 +116,30 @@
                         a = a[sortKey];
                         b = b[sortKey];
 
-                        if (typeof(a) === 'string') { a = a.toLowerCase(); }
-                        if (typeof(b) === 'string') { b = b.toLowerCase(); }
+                        if (typeof a === "string") {
+                            a = a.toLowerCase();
+                        }
+                        if (typeof b === "string") {
+                            b = b.toLowerCase();
+                        }
 
                         return (a === b ? 0 : a > b ? 1 : -1) * order;
                     });
                 }
+
+                var filterWord = this.searchWord && this.searchWord.toLowerCase();
+                if (filterWord) {
+                    data = data.filter(function(row) {
+                        return Object.keys(row).some(function(key) {
+                            return (
+                                String(row[key])
+                                    .toLowerCase()
+                                    .indexOf(filterWord) > -1
+                            );
+                        });
+                    });
+                }
+
                 return data;
             }
         }

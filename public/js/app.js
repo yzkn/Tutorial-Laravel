@@ -2202,6 +2202,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       columns: columns,
       items: null,
+      searchWord: "",
       sortKey: "",
       sortOrders: sortOrders
     };
@@ -2240,15 +2241,25 @@ __webpack_require__.r(__webpack_exports__);
           a = a[sortKey];
           b = b[sortKey];
 
-          if (typeof a === 'string') {
+          if (typeof a === "string") {
             a = a.toLowerCase();
           }
 
-          if (typeof b === 'string') {
+          if (typeof b === "string") {
             b = b.toLowerCase();
           }
 
           return (a === b ? 0 : a > b ? 1 : -1) * order;
+        });
+      }
+
+      var filterWord = this.searchWord && this.searchWord.toLowerCase();
+
+      if (filterWord) {
+        data = data.filter(function (row) {
+          return Object.keys(row).some(function (key) {
+            return String(row[key]).toLowerCase().indexOf(filterWord) > -1;
+          });
         });
       }
 
@@ -2603,6 +2614,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       columns: columns,
       subitems: null,
+      searchWord: "",
       sortKey: "",
       sortOrders: sortOrders
     };
@@ -2641,15 +2653,25 @@ __webpack_require__.r(__webpack_exports__);
           a = a[sortKey];
           b = b[sortKey];
 
-          if (typeof a === 'string') {
+          if (typeof a === "string") {
             a = a.toLowerCase();
           }
 
-          if (typeof b === 'string') {
+          if (typeof b === "string") {
             b = b.toLowerCase();
           }
 
           return (a === b ? 0 : a > b ? 1 : -1) * order;
+        });
+      }
+
+      var filterWord = this.searchWord && this.searchWord.toLowerCase();
+
+      if (filterWord) {
+        data = data.filter(function (row) {
+          return Object.keys(row).some(function (key) {
+            return String(row[key]).toLowerCase().indexOf(filterWord) > -1;
+          });
         });
       }
 
@@ -39282,7 +39304,41 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "table-wrapper" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "table-title" }, [
+        _c("div", { staticClass: "row" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("div", { staticClass: "search-box" }, [
+              _c("div", { staticClass: "input-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.searchWord,
+                      expression: "searchWord"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Search by Name" },
+                  domProps: { value: _vm.searchWord },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.searchWord = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
+            ])
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("table", { staticClass: "table table-striped" }, [
         _c("thead", [
@@ -39380,29 +39436,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "table-title" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-6" }, [_c("h2", [_vm._v("Items")])]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "search-box" }, [
-            _c("div", { staticClass: "input-group" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "search",
-                  placeholder: "Search by Name"
-                }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "input-group-addon" }, [
-                _c("i", { staticClass: "material-icons" }, [_vm._v("")])
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "col-sm-6" }, [_c("h2", [_vm._v("Items")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("")])
     ])
   }
 ]
@@ -39878,7 +39919,41 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "table-wrapper" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "table-title" }, [
+        _c("div", { staticClass: "row" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("div", { staticClass: "search-box" }, [
+              _c("div", { staticClass: "input-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.searchWord,
+                      expression: "searchWord"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Search by Name" },
+                  domProps: { value: _vm.searchWord },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.searchWord = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _vm._m(1)
+              ])
+            ])
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("table", { staticClass: "table table-striped" }, [
         _c("thead", [
@@ -39983,31 +40058,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "table-title" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("h2", [_vm._v("Subitems")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "search-box" }, [
-            _c("div", { staticClass: "input-group" }, [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "search",
-                  placeholder: "Search by Name"
-                }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "input-group-addon" }, [
-                _c("i", { staticClass: "material-icons" }, [_vm._v("")])
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "col-sm-6" }, [
+      _c("h2", [_vm._v("Subitems")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "input-group-addon" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("")])
     ])
   }
 ]
